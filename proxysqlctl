@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+
+from absl import flags, app
+
+flags = flags.FLAGS
+

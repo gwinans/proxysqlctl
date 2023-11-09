@@ -1,0 +1,26 @@
+proxysqctl:
+
+  # Default instance
+  default_instance: local
+
+  instances:
+    local:
+      username: admin
+      password: proxysql
+      hostname: 127.0.0.1
+      port: 6032
+
+    example_server_1:
+      username: radmin
+      password: proxysql
+      hostname: 1.2.3.4
+      port: 6032
+      gcp:
+        project_name: my-gcp-project
+        secret_name: my-gcp-secret
+
+    example_server_2:
+      username: radmin
+      password: proxysql
+      hostname: 4.3.2.1
+      port: 6032
