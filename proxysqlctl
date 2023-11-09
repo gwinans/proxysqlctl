@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-from absl import flags, app
-
-flags = flags.FLAGS
+from pylib.DatabaseHelper import DatabaseHelper
+from pylib.YAMLConfigHelper import YAMLConfigHelper
 
