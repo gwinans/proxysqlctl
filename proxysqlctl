@@ -1,3 +1,11 @@
 from pylib.DatabaseHelper import DatabaseHelper
 from pylib.YAMLConfigHelper import YAMLConfigHelper
 
+
+def main():
+    # Load our config
+    pxcfg = YAMLConfigHelper()
+    pxcfg.load()
+
+    
+
