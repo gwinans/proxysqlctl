@@ -1,8 +1,5 @@
-import os, datetime
-
 from google.cloud import secretmanager
 from google.api_core.exceptions import NotFound
-from google.cloud.asset_v1 import AssetServiceClient, SearchAllResourcesRequest
 
 
 class GCPHelper:

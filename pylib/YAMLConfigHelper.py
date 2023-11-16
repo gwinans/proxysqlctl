@@ -1,5 +1,6 @@
 import os
 import yaml
+import shutils
 
 
 class YAMLConfigHelper:
@@ -9,6 +10,14 @@ class YAMLConfigHelper:
         )
         # self.filename = os.path.expanduser(os.path.join("~", ".config", "proxysqlctl", "proxysqlctl.yaml"))
         self.data = None
+
+    def install(self):
+        cfgsrc = os.path.join("config", "proxysqlctl.yaml")
+        cfgdst = self.filename
+
+        if not os.path.exists(self.filename):
+            os.makedirs(os.path.dirname(self.filename), exist_ok=True)
+            shutils.copyfile(cfgsrc, cfgdst)
 
     def load(self):
         try:
