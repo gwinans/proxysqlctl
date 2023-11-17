@@ -11,9 +11,9 @@ class YAMLConfigHelper:
         self.xdg_config_home = None
 
         # Get the platform
-        self.platform = platform.system()
+        self.platform = platform.system().lower()
 
-        if "windows" in self.platform.lower():
+        if "windows" in self.platform:
             self.full_config_path = os.path.join(
                 os.getenv("LOCALAPPDATA"), "proxysqlctl", "proxysqlctl.yaml"
             )
