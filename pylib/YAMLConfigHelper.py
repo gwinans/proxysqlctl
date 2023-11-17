@@ -22,7 +22,9 @@ class YAMLConfigHelper:
                 self.xdg_config_home = os.path.expanduser(os.path.join("~", ".config"))
             else:
                 self.xdg_config_home = os.path.expanduser(
-                    os.path.join("~", ".config", "proxysqlctl", "proxysqlctl.yaml")
+                    os.path.join(
+                        os.getenv("XDG_CONFIG_HOME"), "proxysqlctl", "proxysqlctl.yaml"
+                    )
                 )
 
         self.full_config_path = os.path.join(
