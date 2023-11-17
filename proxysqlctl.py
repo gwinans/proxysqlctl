@@ -1,4 +1,4 @@
-from pylib.DatabaseHelper import DatabaseHelper
+# from pylib.DatabaseHelper import DatabaseHelper
 from pylib.YAMLConfigHelper import YAMLConfigHelper
 
 
@@ -13,3 +13,7 @@ def main():
     default_instance = pxcfg["instances"][pxcfg["default_instance"]]
 
     print(f"Default instance: {default_instance}")
+
+
+if __name__ == "__main__":
+    main()

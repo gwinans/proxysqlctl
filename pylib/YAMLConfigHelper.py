@@ -1,14 +1,19 @@
 import os
 import yaml
-import shutils
+import shutil
+from rich import print
 
 
 class YAMLConfigHelper:
     def __init__(self):
-        self.filename = os.path.expanduser(
-            os.path.join("~", "repos", "proxysqlctl", "config", "proxysqlctl.yaml")
-        )
-        # self.filename = os.path.expanduser(os.path.join("~", ".config", "proxysqlctl", "proxysqlctl.yaml"))
+        if os.getenv("XDG_CONFIG_HOME") is not None:
+            self.filename = os.path.join(
+                os.getenv("XDG_CONFIG_HOME"), "proxysqlctl", "proxysqlctl.yaml"
+            )
+        else:
+            self.filename = os.path.expanduser(
+                os.path.join("~", ".config", "proxysqlctl", "proxysqlctl.yaml")
+            )
         self.data = None
 
     def install(self):
@@ -16,8 +21,12 @@ class YAMLConfigHelper:
         cfgdst = self.filename
 
         if not os.path.exists(self.filename):
+            print("Installing config file")
             os.makedirs(os.path.dirname(self.filename), exist_ok=True)
-            shutils.copyfile(cfgsrc, cfgdst)
+            shutil.copyfile(cfgsrc, cfgdst)
+            print(f"Config file installed to:\n   {cfgdst}\n")
+            print("Please edit the config file and re-run this command")
+            exit(1)
 
     def load(self):
         try:
