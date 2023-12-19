@@ -1,5 +1,6 @@
-# from pylib.DatabaseHelper import DatabaseHelper
+from rich import print
 from pylib.YAMLConfigHelper import YAMLConfigHelper
+from pylib.GenericHelper import GenericHelper
 
 
 def main():
@@ -9,12 +10,19 @@ def main():
     pxyml.install()
     # Load the config file
     pxcfg = pxyml.load()
+    default_instance = pxcfg["default_instance"]
 
-    # default_instance = pxcfg["instances"][pxcfg["default_instance"]]
-    # print(f"Default instance: {default_instance}")
+    print("You will be connecting to the following instance:")
+    print(f"   {default_instance}")
 
-    print(type(pxcfg))
+    GenericHelper.yesno("Is this correct?")
 
+    dbconfig = {
+        "host": pxcfg["instances"][default_instance]["hostname"],
+        "user": pxcfg["instances"][default_instance]["username"],
+        "password": pxcfg["instances"][default_instance]["password"],
+        "db": "proxysql",
+    }
 
 if __name__ == "__main__":
     main()

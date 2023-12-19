@@ -12,11 +12,3 @@ class GCPHelper:
             return response.payload.data.decode("UTF-8")
         except NotFound:
             return None
-
-    def cache_projects(self, cache_file, projects):
-        with open(cache_file, "w") as f:
-            f.write("\n".join(projects))
-
-    def load_cached_projects(cache_file):
-        with open(cache_file, "r") as f:
-            return f.read().split("\n")

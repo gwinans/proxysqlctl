@@ -2,45 +2,46 @@ import pymysql
 
 
 class DatabaseHelper:
-    def __init__(self, config):
-        self.connection = None
-        self.connection = pymysql.connect(**config)
+    def __init__(self, **dbconfig):
+        self._cxn = pymysql.connect(
+            host=dbconfig["host"],
+            user=dbconfig["user"],
+            password=dbconfig["password"],
+            db=dbconfig["db"],
+        )
+        self._cur = self._cxn.cursor()
 
-    def query(self, sql, args):
-        cursor = self.connection.cursor()
-        cursor.execute(sql, args)
-        return cursor
+    def __enter__(self):
+        return self
 
-    def insert(self, sql, args):
-        cursor = self.query(sql, args)
-        id = cursor.lastrowid
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._cxn.close()
+
+    @property
+    def connection(self):
+        return self._cxn
+
+    @property
+    def cursor(self):
+        return self._cur
+
+    def commit(self):
         self.connection.commit()
-        cursor.close()
-        return id
 
-    def update(self, sql, args):
-        cursor = self.query(sql, args)
-        rowcount = cursor.rowcount
-        self.connection.commit()
-        cursor.close()
-        return rowcount
+    def close(self, commit=True):
+        if commit:
+            self.commit()
+        self.connection.close()
 
-    def fetch(self, sql, args):
-        rows = []
-        cursor = self.query(sql, args)
-        if cursor.with_rows:
-            rows = cursor.fetchall()
-        cursor.close()
-        return rows
+    def execute(self, sql, params=None):
+        self.cursor.execute(sql, params or ())
 
-    def fetchone(self, sql, args):
-        row = None
-        cursor = self.query(sql, args)
-        if cursor.with_rows:
-            row = cursor.fetchone()
-        cursor.close()
-        return row
+    def fetchall(self):
+        return self.cursor.fetchall()
 
-    def __del__(self):
-        if self.connection != None:
-            self.connection.close()
+    def fetchone(self):
+        return self.cursor.fetchone()
+
+    def query(self, sql, params=None):
+        self.cursor.execute(sql, params or ())
+        return self.fetchall()
