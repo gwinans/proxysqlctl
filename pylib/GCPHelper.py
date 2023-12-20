@@ -1,3 +1,5 @@
+# The plan to implement support for GCP/AWS/Azure/Vault secrets will happen, but definitely not in the first versions.
+
 from google.cloud import secretmanager
 from google.api_core.exceptions import NotFound
 

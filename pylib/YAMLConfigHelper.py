@@ -46,11 +46,12 @@ class YAMLConfigHelper:
                 print(f"  Failed to create directory: {e}")
                 exit(1)
 
+            print("  Copying config file")
+
             try:
-                print("  Creating config file")
                 shutil.copyfile(cfgsrc, self.full_config_path)
             except IOError as e:
-                print(f"  Failed to copy config file: {e}")
+                print(f"  [bold red]Failed to copy config file: {e}")
                 exit(1)
 
             print("Config file installed to:")
@@ -71,7 +72,7 @@ class YAMLConfigHelper:
 
     def get_instance(self, name):
         return self.data.instances[f"{name}"]
-    
+
     def get_instances(self):
         return self.data.instances
 
@@ -82,9 +83,12 @@ class YAMLConfigHelper:
         if self.data.instances.get(instance) is None:
             print("Instance not found.")
             exit(1)
+
         self.data.default_instance = instance
+
         try:
             with open(self.full_config_path, "w") as f:
                 OmegaConf.save(self.data, f)
+                print("Default instance set to: " + instance)
         except FileNotFoundError:
             print("Config file not found.")

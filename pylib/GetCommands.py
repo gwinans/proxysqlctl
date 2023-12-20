@@ -2,29 +2,22 @@ import typer
 from rich import print
 from rich.console import Console
 from rich.table import Table
+from typing import Annotated
 from pylib.DatabaseHelper import DatabaseHelper
-from pylib.YAMLConfigHelper import YAMLConfigHelper
 
 
-app = typer.Typer()
+get = typer.Typer()
 console = Console()
 
 
 class GetCommandHelper:
     def __init__(self, **dbconfig):
         self._dbh = DatabaseHelper(**dbconfig)
-        self.app = app
+        self.get = get
 
-    @app.command()
-    def set_default_instance(self, instance: str = typer.Argument("", "--set-default-instance")):
-        print(f"Setting default instance to {instance}.")
-
-        pxcfg = YAMLConfigHelper().load()
-        pxcfg.set_default_instance(instance)
-
-    @app.command()
-    def get_admin_users(self, full: bool = typer.Option(False, "--full")):
-        print("Getting admin users with credentials.")
+    @get.command("--get-admin-users")
+    def get_admin_users(self, full: Annotated[bool, typer.Option(False, "--full")]):
+        print("Getting admin user(s).")
 
         sql = "SELECT variable_value FROM global_variables where variable_name = 'admin-admin_credentials'"
         self._dbh.execute(sql)
@@ -54,7 +47,7 @@ class GetCommandHelper:
 
         console.print(table)
 
-    @app.command()
+    @get.command("--get-mysql-servers")
     def get_mysql_servers(self):
         print("Getting MySQL servers.")
 
@@ -92,7 +85,7 @@ class GetCommandHelper:
         console.print(table)
         print()
 
-    @app.command()
+    @get.command("--get-proxysql-servers")
     def get_proxysql_servers(self):
         print("Getting ProxySQL servers.")
         print()
